@@ -147,6 +147,7 @@
 </template>
 <script>
 import { getBanner, getPersonalized, getAlbum } from '../../service/getData'
+// 轮播插件 vue-awesome-swiper
 import { swiper, swiperSlide } from 'vue-awesome-swiper'
 import 'swiper/dist/css/swiper.css'
 
