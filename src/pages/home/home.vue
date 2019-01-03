@@ -108,46 +108,30 @@
                     </div>
                   </div>
                   <!-- 新碟上架 -->
-                  <div class="c-hot">
+                  <div class="c-hot new-dish">
                     <div class="hot-title">
                       <h3>
-                        <Icon type="md-disc"/>热门推荐
-                        <span>华语</span>
-                        <span>|</span>
-                        <span>流行</span>
-                        <span>|</span>
-                        <span>摇滚</span>
-                        <span>|</span>
-                        <span>民谣</span>
-                        <span>|</span>
-                        <span>电子</span>
+                        <Icon type="md-disc"/>新碟上架
                       </h3>
                       <p>更多
                         <Icon type="ios-arrow-round-forward"/>
                       </p>
                     </div>
-                    <div class="hot-lists">
-                      <ul class="list-song">
-                        <li v-for="(song, index2) in songs" :key="index2" v-if="index2 < 8">
-                          <div class="list-play">
-                            <div class="play-bg">
-                              <div class="play-number">
-                                <Icon type="ios-headset"/>
-                                <span>{{song.trackCount}}</span>万
-                              </div>
-                              <Icon type="ios-play"/>
-                            </div>
+                    <div class="dh-box">
+                      <swiper :options="swiperOption">
+                        <swiper-slide v-for="(album, index3) in albums" :key="index3">
+                          <div class="dh-img">
+                            <img :src="album.picUrl" alt>
+                            <p>{{album.name}}</p>
+                            <p>{{album.artist.name}}</p>
                           </div>
-                          <img :src="song.picUrl" alt>
-                          <p>{{song.name}}</p>
-                        </li>
-                      </ul>
+                        </swiper-slide>
+                      </swiper>
                     </div>
                   </div>
                 </div>
                 <div class="c-right">rightrightrightrightrightright</div>
               </div>
-              <!-- 热门推荐 -->
             </TabPane>
             <TabPane label="排行榜" name="name2">标签二的内容</TabPane>
             <TabPane label="歌单" name="name3">标签三的内容</TabPane>
@@ -162,9 +146,15 @@
   </div>
 </template>
 <script>
-import { getBanner, getPersonalized } from '../../service/getData'
+import { getBanner, getPersonalized, getAlbum } from '../../service/getData'
+import { swiper, swiperSlide } from 'vue-awesome-swiper'
+import 'swiper/dist/css/swiper.css'
 
 export default {
+  components: {
+    swiper,
+    swiperSlide
+  },
   data() {
     return {
       value3: 0,
@@ -178,6 +168,11 @@ export default {
       },
       banners: [],
       songs: [],
+      albums: [],
+      swiperOption: {
+        slidesPerView: 5,
+        spaceBetween: 20,
+      },
     }
   },
   mounted() {
@@ -187,9 +182,19 @@ export default {
     getPersonalized().then(res => {
       this.songs = res.result;
     });
+    getAlbum().then(res => {
+      this.albums = res.albums;
+    });
+    console.log(this.swiper)
+    this.swiper.slideTo(3, 1000, false);
   },
   methods: {
 
+  },
+  computed: {
+    swiper() {
+      return this.$refs.mySwiper.swiper
+    }
   },
 }
 </script>
@@ -310,6 +315,7 @@ export default {
               .ivu-icon {
                 color: #c20c0c;
                 font-size: 18px;
+                padding-right: 4px;
               }
               span {
                 font-size: 12px;
@@ -329,11 +335,9 @@ export default {
               display: flex;
               justify-content: space-between;
               flex-wrap: wrap;
-
               li {
                 list-style: none;
                 margin-top: 10px;
-
                 img {
                   width: 140px;
                   height: 140px;
@@ -359,6 +363,33 @@ export default {
                   }
                 }
               }
+            }
+          }
+        }
+        // 新碟推荐
+        .new-dish {
+          margin-top: 10px;
+          .dh-box {
+            width: 100%;
+            height: 186px;
+            border: 1px solid #ccc;
+            margin-top: 10px;
+            background: #f5f5f5;
+            padding: 24px 20px 24px 20px;
+            .dh-img {
+              img {
+                width: 118px;
+                height: 100px;
+              }
+              p {
+                width: 118px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+              }
+            }
+            .ivu-carousel-item {
+              text-align: center;
             }
           }
         }

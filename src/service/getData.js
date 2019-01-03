@@ -6,7 +6,8 @@ export const getBanner = () => fetch('/banner', {});
 //推荐歌单
 export const getPersonalized = () => fetch('/personalized', {});
 
-
+//新碟上架
+export const getAlbum = () => fetch('/top/album', {});
 
 
 
