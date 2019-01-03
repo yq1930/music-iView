@@ -119,7 +119,11 @@
                     </div>
                     <div class="dh-box">
                       <swiper :options="swiperOption">
-                        <swiper-slide v-for="(album, index3) in albums" :key="index3">
+                        <swiper-slide
+                          v-for="(album, index3) in albums"
+                          :key="index3"
+                          v-if="index3 < 10"
+                        >
                           <div class="dh-img">
                             <img :src="album.picUrl" alt>
                             <p>{{album.name}}</p>
@@ -129,8 +133,116 @@
                       </swiper>
                     </div>
                   </div>
+                  <!-- 榜单 -->
+                  <div class="c-hot new-dish list">
+                    <div class="hot-title">
+                      <h3>
+                        <Icon type="md-disc"/>榜单
+                      </h3>
+                      <p>更多
+                        <Icon type="ios-arrow-round-forward"/>
+                      </p>
+                    </div>
+                    <div class="lt-box">
+                      <div class="lt-content">
+                        <div class="lt-left">
+                          <div class="soaring">
+                            <img src="../../assets/image/img-soaring.jpg" alt>
+                            <h3>云音乐飙升榜
+                              <p>
+                                <Icon type="ios-play"/>
+                                <span>
+                                  <Icon type="ios-folder"/>
+                                </span>
+                              </p>
+                            </h3>
+                          </div>
+                          <ul class="soaring-lists">
+                            <li
+                              v-for="(soaring, index4) in soaringLists"
+                              :key="index4"
+                              v-if="index4 < 10"
+                            >
+                              {{index4+1}}
+                              <span>{{soaring.name}}</span>
+                            </li>
+                            <li class="all">查看全部 ></li>
+                          </ul>
+                        </div>
+                        <div class="lt-center">
+                          <div class="soaring">
+                            <img src="../../assets/image/img-new.jpg" alt>
+                            <h3>云音乐新歌榜
+                              <p>
+                                <Icon type="ios-play"/>
+                                <span>
+                                  <Icon type="ios-folder"/>
+                                </span>
+                              </p>
+                            </h3>
+                          </div>
+                          <ul class="soaring-lists">
+                            <li
+                              v-for="(newSong, index5) in newSongs"
+                              :key="index5"
+                              v-if="index5 < 10"
+                            >
+                              {{index5+1}}
+                              <span>{{newSong.name}}</span>
+                            </li>
+                            <li class="all">查看全部 ></li>
+                          </ul>
+                        </div>
+                        <div class="lt-right">
+                          <div class="soaring">
+                            <img src="../../assets/image/img-original.jpg" alt>
+                            <h3>云音乐原创榜
+                              <p>
+                                <Icon type="ios-play"/>
+                                <span>
+                                  <Icon type="ios-folder"/>
+                                </span>
+                              </p>
+                            </h3>
+                          </div>
+                          <ul class="soaring-lists">
+                            <li
+                              v-for="(original, index6) in originals"
+                              :key="index6"
+                              v-if="index6 < 10"
+                            >
+                              {{index6+1}}
+                              <span>{{original.name}}</span>
+                            </li>
+                            <li class="all">查看全部 ></li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-                <div class="c-right">rightrightrightrightrightright</div>
+                <div class="c-right">
+                  <div class="r-login">
+                    <p>登录网易云音乐，可以享受无限收藏的乐趣，并且无限同步到手机</p>
+                    <Button>用户登录</Button>
+                  </div>
+                  <div class="r-singer">
+                    <ul>
+                      <li>
+                        <h3>入驻歌手</h3>
+                        <p>查看全部 ></p>
+                      </li>
+                      <li></li>
+                      <li v-for="(singer, index7) in enterSingers" :key="index7" v-if="index7 < 5">
+                        <img :src="singer.img1v1Url" alt>
+                        <div class="singer">
+                          <p>{{singer.name}}</p>
+                          <!-- <p>{{singer.name}}</p> -->
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
               </div>
             </TabPane>
             <TabPane label="排行榜" name="name2">标签二的内容</TabPane>
@@ -145,9 +257,9 @@
     </Layout>
   </div>
 </template>
+
 <script>
-import { getBanner, getPersonalized, getAlbum } from '../../service/getData'
-// 轮播插件 vue-awesome-swiper
+import { getBanner, getPersonalized, getAlbum, getSoaring, getNewSongs, getOriginal, getEnterSinger } from '../../service/getData'
 import { swiper, swiperSlide } from 'vue-awesome-swiper'
 import 'swiper/dist/css/swiper.css'
 
@@ -173,7 +285,15 @@ export default {
       swiperOption: {
         slidesPerView: 5,
         spaceBetween: 20,
+        navigation: {
+          nextEl: '.swiper-button-next',
+          prevEl: '.swiper-button-prev',
+        },
       },
+      soaringLists: [],
+      newSongs: [],
+      originals: [],
+      enterSingers: [],
     }
   },
   mounted() {
@@ -186,7 +306,18 @@ export default {
     getAlbum().then(res => {
       this.albums = res.albums;
     });
-    console.log(this.swiper)
+    getSoaring().then(res => {
+      this.soaringLists = res.playlist.tracks;
+    });
+    getNewSongs().then(res => {
+      this.newSongs = res.playlist.tracks;
+    });
+    getOriginal().then(res => {
+      this.originals = res.playlist.tracks;
+    });
+    getEnterSinger().then(res => {
+      this.enterSingers = res.artists;
+    });
     this.swiper.slideTo(3, 1000, false);
   },
   methods: {
@@ -298,9 +429,8 @@ export default {
     .content {
       display: flex;
       justify-content: space-between;
-      align-items: center;
       .c-left {
-        width: 730px;
+        width: 740px;
         padding: 20px;
         border: 1px solid #ccc;
         // 热门推荐
@@ -374,7 +504,7 @@ export default {
             width: 100%;
             height: 186px;
             border: 1px solid #ccc;
-            margin-top: 10px;
+            margin-top: 20px;
             background: #f5f5f5;
             padding: 24px 20px 24px 20px;
             .dh-img {
@@ -394,9 +524,115 @@ export default {
             }
           }
         }
+        // 榜单
+        .list {
+          .lt-box {
+            width: 100%;
+            height: auto;
+            border: 1px solid #ccc;
+            margin-top: 20px;
+            .lt-content {
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+              background: #f5f5f5;
+              .lt-left,
+              .lt-center,
+              .lt-right {
+                width: 220px;
+                height: auto;
+                border-right: 1px solid #ccc;
+                padding: 10px;
+                .soaring {
+                  display: flex;
+                  justify-content: flex-start;
+                  align-items: center;
+                  h3 {
+                    margin-left: 10px;
+                  }
+                }
+                .soaring-lists {
+                  list-style: none;
+                  margin-top: 10px;
+                  li {
+                    width: 100%;
+                    height: 32px;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+                  }
+                  .all {
+                    text-align: right;
+                  }
+                }
+              }
+              .lt-right {
+                border-right: 0;
+              }
+            }
+          }
+        }
       }
       .c-right {
-        width: 20%;
+        width: 360px;
+        border: 1px solid #ccc;
+        border-left: 0;
+        .r-login {
+          padding: 20px;
+          text-align: center;
+          background: #f5f5f5;
+          box-shadow: #000;
+          p {
+            text-align: left;
+            color: #666;
+          }
+          .ivu-btn {
+            width: 100px;
+            height: 30px;
+            color: #fff;
+            background: #c20c0c;
+          }
+        }
+        .r-singer {
+          padding: 20px;
+          ul {
+            list-style: none;
+            li:nth-of-type(1) {
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+            }
+            li:nth-of-type(2) {
+              border-bottom: 1px solid #ccc;
+            }
+            // li:nth-of-type(3) {
+            //   margin-top: 10px;
+            //   background: #fafafa;
+            // }
+            li:nth-of-type(n + 3) {
+              margin-top: 10px;
+              background: #fafafa;
+              display: flex;
+              justify-content: flex-start;
+              align-items: center;
+              border: 1px solid #ccc;
+              img {
+                width: 62px;
+                height: 62px;
+              }
+              .singer {
+                p {
+                  margin-left: 10px;
+                  font-size: 14px;
+                }
+                p:first-child {
+                  font-weight: 600;
+                  color: #000;
+                }
+              }
+            }
+          }
+        }
       }
     }
   }

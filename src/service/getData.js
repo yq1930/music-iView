@@ -9,9 +9,17 @@ export const getPersonalized = () => fetch('/personalized', {});
 //新碟上架
 export const getAlbum = () => fetch('/top/album', {});
 
+//飙升榜
+export const getSoaring = () => fetch('/top/list?idx=3', {});
 
+//新歌榜
+export const getNewSongs = () => fetch('/top/list?idx=0', {});
 
+//原创榜
+export const getOriginal = () => fetch('/top/list?idx=2', {});
 
+//入驻歌手
+export const getEnterSinger = () => fetch('/artist/list?cat=5001', {});
 
 
 //手机号登录

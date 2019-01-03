@@ -9,7 +9,6 @@ import './assets/fonts/iconfont.css'
 Vue.use(VueRouter);
 Vue.use(iView);
 
-// The routing configuration
 const RouterConfig = {
   routes: routers,
 };
