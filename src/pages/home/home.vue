@@ -259,9 +259,17 @@
 </template>
 
 <script>
-import { getBanner, getPersonalized, getAlbum, getSoaring, getNewSongs, getOriginal, getEnterSinger } from '../../service/getData'
-import { swiper, swiperSlide } from 'vue-awesome-swiper'
-import 'swiper/dist/css/swiper.css'
+import {
+  getBanner,
+  getPersonalized,
+  getAlbum,
+  getSoaring,
+  getNewSongs,
+  getOriginal,
+  getEnterSinger
+} from "../../service/getData";
+import { swiper, swiperSlide } from "vue-awesome-swiper";
+import "swiper/dist/css/swiper.css";
 
 export default {
   components: {
@@ -274,10 +282,10 @@ export default {
       setting: {
         autoplay: true,
         autoplaySpeed: 8000,
-        dots: 'inside',
+        dots: "inside",
         radiusDot: true,
-        trigger: 'hover',
-        arrow: 'hover'
+        trigger: "hover",
+        arrow: "hover"
       },
       banners: [],
       songs: [],
@@ -286,15 +294,15 @@ export default {
         slidesPerView: 5,
         spaceBetween: 20,
         navigation: {
-          nextEl: '.swiper-button-next',
-          prevEl: '.swiper-button-prev',
-        },
+          nextEl: ".swiper-button-next",
+          prevEl: ".swiper-button-prev"
+        }
       },
       soaringLists: [],
       newSongs: [],
       originals: [],
-      enterSingers: [],
-    }
+      enterSingers: []
+    };
   },
   mounted() {
     getBanner().then(res => {
@@ -320,15 +328,13 @@ export default {
     });
     this.swiper.slideTo(3, 1000, false);
   },
-  methods: {
-
-  },
+  methods: {},
   computed: {
     swiper() {
-      return this.$refs.mySwiper.swiper
+      return this.$refs.mySwiper.swiper;
     }
-  },
-}
+  }
+};
 </script>
 <style lang="scss" >
 .ivu-layout-header {
