@@ -320,9 +320,18 @@
 </template>
 
 <script>
-import { getBanner, getPersonalized, getAlbum, getSoaring, getNewSongs, getOriginal, getEnterSinger, getArtists } from '../../service/getData'
-import { swiper, swiperSlide } from 'vue-awesome-swiper'
-import 'swiper/dist/css/swiper.css'
+import {
+  getBanner,
+  getPersonalized,
+  getAlbum,
+  getSoaring,
+  getNewSongs,
+  getOriginal,
+  getEnterSinger,
+  getArtists
+} from "../../service/getData";
+import { swiper, swiperSlide } from "vue-awesome-swiper";
+import "swiper/dist/css/swiper.css";
 
 export default {
   components: {
@@ -355,8 +364,8 @@ export default {
       newSongs: [],
       originals: [],
       enterSingers: [],
-      artists: [],
-    }
+      artists: []
+    };
   },
   mounted() {
     getBanner().then(res => {
@@ -464,6 +473,7 @@ export default {
     width: 1100px;
     margin-left: auto;
     margin-right: auto;
+    background: #fff;
     .ivu-tabs {
       .ivu-tabs-bar {
         border-bottom: 0;
@@ -484,6 +494,9 @@ export default {
         font-weight: bold;
         font-size: 18px;
       }
+      .ivu-carousel{
+        height: 407px;
+      }
     }
     .c-banner {
       img {
@@ -498,6 +511,7 @@ export default {
         padding: 20px;
         border: 1px solid #ccc;
         border-bottom: 0;
+        border-top: 0;
         // 热门推荐
         .c-hot {
           .hot-title {
@@ -644,6 +658,7 @@ export default {
         border: 1px solid #ccc;
         border-bottom: 0;
         border-left: 0;
+        border-top: 0;
         .r-login {
           padding: 20px;
           text-align: center;
