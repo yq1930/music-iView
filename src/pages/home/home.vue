@@ -240,6 +240,29 @@
                           <!-- <p>{{singer.name}}</p> -->
                         </div>
                       </li>
+                      <div class="musician">
+                        <Button>申请成为网易音乐人</Button>
+                      </div>
+                    </ul>
+                  </div>
+                  <div class="r-anchor">
+                    <ul>
+                      <li>
+                        <h3>热门主播</h3>
+                      </li>
+                      <li></li>
+                      <li v-for="(artist, index8) in artists" :key="index8" v-if="index8 < 5">
+                        <div class="anchor">
+                          <img :src="artist.img1v1Url" alt>
+                          <div class="anchor-name">
+                            <h3>
+                              {{artist.name}}
+                              <i>V</i>
+                            </h3>
+                            <p v-for="(item, index9) in artist.alias" :key="index9">{{item}}</p>
+                          </div>
+                        </div>
+                      </li>
                     </ul>
                   </div>
                 </div>
@@ -253,23 +276,53 @@
           </Tabs>
         </div>
       </Content>
-      <Footer>Footer</Footer>
+      <Footer>
+        <div class="footer">
+          <div class="f-box">
+            <div class="f-left">
+              <ul>
+                <li>关于网易 | 客户服务 | 服务条款 | 网站导航 | 意见反馈</li>
+                <li>
+                  网易公司版权所有©1997-2019
+                  <span>杭州乐读科技有限公司运营：浙网文[2018]3506-263号</span>
+                </li>
+                <li>
+                  违法和不良信息举报电话：0571-89853516
+                  <span>举报邮箱：ncm5990@163.com</span>
+                </li>
+              </ul>
+            </div>
+            <div class="f-right">
+              <ul>
+                <li>
+                  <img src="../../assets/icon/icon-user.png" alt>
+                  <p>用户认证</p>
+                </li>
+                <li>
+                  <img src="../../assets/icon/icon-music.png" alt>
+                  <p>独立音乐人</p>
+                </li>
+                <li>
+                  <img src="../../assets/icon/icon-appreciate.png" alt>
+                  <p>赞赏</p>
+                </li>
+                <li>
+                  <img src="../../assets/icon/icon-video.png" alt>
+                  <p>视频奖励</p>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </Footer>
     </Layout>
   </div>
 </template>
 
 <script>
-import {
-  getBanner,
-  getPersonalized,
-  getAlbum,
-  getSoaring,
-  getNewSongs,
-  getOriginal,
-  getEnterSinger
-} from "../../service/getData";
-import { swiper, swiperSlide } from "vue-awesome-swiper";
-import "swiper/dist/css/swiper.css";
+import { getBanner, getPersonalized, getAlbum, getSoaring, getNewSongs, getOriginal, getEnterSinger, getArtists } from '../../service/getData'
+import { swiper, swiperSlide } from 'vue-awesome-swiper'
+import 'swiper/dist/css/swiper.css'
 
 export default {
   components: {
@@ -301,8 +354,9 @@ export default {
       soaringLists: [],
       newSongs: [],
       originals: [],
-      enterSingers: []
-    };
+      enterSingers: [],
+      artists: [],
+    }
   },
   mounted() {
     getBanner().then(res => {
@@ -325,6 +379,9 @@ export default {
     });
     getEnterSinger().then(res => {
       this.enterSingers = res.artists;
+    });
+    getArtists().then(res => {
+      this.artists = res.artists;
     });
     this.swiper.slideTo(3, 1000, false);
   },
@@ -402,6 +459,7 @@ export default {
   }
 }
 .ivu-layout-content {
+  background: #f2f2f2;
   .c-bg {
     width: 1100px;
     margin-left: auto;
@@ -439,6 +497,7 @@ export default {
         width: 740px;
         padding: 20px;
         border: 1px solid #ccc;
+        border-bottom: 0;
         // 热门推荐
         .c-hot {
           .hot-title {
@@ -537,6 +596,7 @@ export default {
             height: auto;
             border: 1px solid #ccc;
             margin-top: 20px;
+            margin-bottom: 20px;
             .lt-content {
               display: flex;
               justify-content: space-between;
@@ -582,6 +642,7 @@ export default {
       .c-right {
         width: 360px;
         border: 1px solid #ccc;
+        border-bottom: 0;
         border-left: 0;
         .r-login {
           padding: 20px;
@@ -610,6 +671,7 @@ export default {
             }
             li:nth-of-type(2) {
               border-bottom: 1px solid #ccc;
+              margin-top: 4px;
             }
             // li:nth-of-type(3) {
             //   margin-top: 10px;
@@ -636,6 +698,105 @@ export default {
                   color: #000;
                 }
               }
+            }
+          }
+          .musician {
+            margin-top: 10px;
+            .ivu-btn {
+              width: 100%;
+              height: 40px;
+              color: #333;
+              background: #fafafa;
+            }
+          }
+        }
+        .r-anchor {
+          padding: 20px;
+          ul {
+            list-style: none;
+            li:nth-of-type(2) {
+              border-bottom: 1px solid #ccc;
+              margin-top: 4px;
+            }
+            li:nth-of-type(n + 3) {
+              .anchor {
+                display: flex;
+                justify-content: flex-start;
+                align-items: center;
+                margin-top: 20px;
+                img {
+                  width: 40px;
+                  height: 40px;
+                }
+                .anchor-name {
+                  margin-left: 20px;
+                  h3 {
+                    i {
+                      font-weight: 600;
+                      color: #c20c0c;
+                    }
+                  }
+                  p {
+                    color: #666;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+                    word-wrap: normal;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+.ivu-layout-footer {
+  background: #f2f2f2;
+  height: auto;
+  border-top: 1px solid #d3d3d3;
+  .footer {
+    width: 1100px;
+    margin-left: auto;
+    margin-right: auto;
+    .f-box {
+      display: flex;
+      justify-content: space-between;
+      ul {
+        list-style: none;
+      }
+      .f-left {
+        ul {
+          li:nth-of-type(1) {
+            color: #999;
+            font-size: 12px;
+          }
+          li:nth-of-type(n + 2) {
+            color: #666;
+            font-size: 12px;
+            margin-top: 6px;
+            span {
+              margin-left: 10px;
+            }
+          }
+        }
+      }
+      .f-right {
+        ul {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          li {
+            margin-left: 40px;
+            text-align: center;
+            img {
+              width: 40px;
+              height: 40px;
+            }
+            p {
+              font-size: 12px;
+              color: #666;
             }
           }
         }

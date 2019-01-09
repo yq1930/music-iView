@@ -21,6 +21,11 @@ export const getOriginal = () => fetch('/top/list?idx=2', {});
 //入驻歌手
 export const getEnterSinger = () => fetch('/artist/list?cat=5001', {});
 
+//热门歌手
+export const getArtists = () => fetch('/top/artists', {});
+
+
+
 
 //手机号登录
 export const getLogin = (phone, password) => fetch('/login/cellphone', {
