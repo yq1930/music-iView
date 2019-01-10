@@ -50,230 +50,269 @@
         </div>
       </Header>
       <Content>
+        <Tabs v-model="value">
+          <TabPane label="推荐" name="name1"></TabPane>
+          <TabPane label="排行榜" name="name2"></TabPane>
+          <TabPane label="歌单" name="name3"></TabPane>
+          <TabPane label="主播电台" name="name4"></TabPane>
+          <TabPane label="歌手" name="name5"></TabPane>
+          <TabPane label="新歌上架" name="name6"></TabPane>
+        </Tabs>
         <div class="c-bg">
-          <Tabs value="name1">
-            <TabPane label="推荐" name="name1">
-              <Carousel
-                v-model="value3"
-                loop
-                :autoplay="setting.autoplay"
-                :autoplay-speed="setting.autoplaySpeed"
-                :dots="setting.dots"
-                :radius-dot="setting.radiusDot"
-                :trigger="setting.trigger"
-                :arrow="setting.arrow"
-              >
-                <CarouselItem v-for="(banner, index1) in banners" :key="index1">
-                  <div class="c-banner">
-                    <img :src="banner.imageUrl" alt>
+          <!-- 推荐页 -->
+          <div v-if="value === 'name1'">
+            <Carousel
+              v-model="value3"
+              loop
+              :autoplay="setting.autoplay"
+              :autoplay-speed="setting.autoplaySpeed"
+              :dots="setting.dots"
+              :radius-dot="setting.radiusDot"
+              :trigger="setting.trigger"
+              :arrow="setting.arrow"
+            >
+              <CarouselItem v-for="(banner, index1) in banners" :key="index1">
+                <div class="c-banner">
+                  <img :src="banner.imageUrl" alt>
+                </div>
+              </CarouselItem>
+            </Carousel>
+            <div class="content">
+              <div class="c-left">
+                <div class="c-hot">
+                  <div class="hot-title">
+                    <h3>
+                      <Icon type="md-disc"/>热门推荐
+                      <span>华语</span>
+                      <span>|</span>
+                      <span>流行</span>
+                      <span>|</span>
+                      <span>摇滚</span>
+                      <span>|</span>
+                      <span>民谣</span>
+                      <span>|</span>
+                      <span>电子</span>
+                    </h3>
+                    <p>更多
+                      <Icon type="ios-arrow-round-forward"/>
+                    </p>
                   </div>
-                </CarouselItem>
-              </Carousel>
-              <div class="content">
-                <div class="c-left">
-                  <div class="c-hot">
-                    <div class="hot-title">
-                      <h3>
-                        <Icon type="md-disc"/>热门推荐
-                        <span>华语</span>
-                        <span>|</span>
-                        <span>流行</span>
-                        <span>|</span>
-                        <span>摇滚</span>
-                        <span>|</span>
-                        <span>民谣</span>
-                        <span>|</span>
-                        <span>电子</span>
-                      </h3>
-                      <p>更多
-                        <Icon type="ios-arrow-round-forward"/>
-                      </p>
-                    </div>
-                    <div class="hot-lists">
-                      <ul class="list-song">
-                        <li v-for="(song, index2) in songs" :key="index2" v-if="index2 < 8">
-                          <div class="list-play">
-                            <div class="play-bg">
-                              <div class="play-number">
-                                <Icon type="ios-headset"/>
-                                <span>{{song.trackCount}}</span>万
-                              </div>
-                              <Icon type="ios-play"/>
+                  <div class="hot-lists">
+                    <ul class="list-song">
+                      <li v-for="(song, index2) in songs" :key="index2" v-show="index2 < 8">
+                        <div class="list-play">
+                          <div class="play-bg">
+                            <div class="play-number">
+                              <Icon type="ios-headset"/>
+                              <span>{{song.trackCount}}</span>万
                             </div>
+                            <Icon type="ios-play"/>
                           </div>
-                          <img :src="song.picUrl" alt>
-                          <p>{{song.name}}</p>
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-                  <!-- 新碟上架 -->
-                  <div class="c-hot new-dish">
-                    <div class="hot-title">
-                      <h3>
-                        <Icon type="md-disc"/>新碟上架
-                      </h3>
-                      <p>更多
-                        <Icon type="ios-arrow-round-forward"/>
-                      </p>
-                    </div>
-                    <div class="dh-box">
-                      <swiper :options="swiperOption">
-                        <swiper-slide
-                          v-for="(album, index3) in albums"
-                          :key="index3"
-                          v-if="index3 < 10"
-                        >
-                          <div class="dh-img">
-                            <img :src="album.picUrl" alt>
-                            <p>{{album.name}}</p>
-                            <p>{{album.artist.name}}</p>
-                          </div>
-                        </swiper-slide>
-                      </swiper>
-                    </div>
-                  </div>
-                  <!-- 榜单 -->
-                  <div class="c-hot new-dish list">
-                    <div class="hot-title">
-                      <h3>
-                        <Icon type="md-disc"/>榜单
-                      </h3>
-                      <p>更多
-                        <Icon type="ios-arrow-round-forward"/>
-                      </p>
-                    </div>
-                    <div class="lt-box">
-                      <div class="lt-content">
-                        <div class="lt-left">
-                          <div class="soaring">
-                            <img src="../../assets/image/img-soaring.jpg" alt>
-                            <h3>云音乐飙升榜
-                              <p>
-                                <Icon type="ios-play"/>
-                                <span>
-                                  <Icon type="ios-folder"/>
-                                </span>
-                              </p>
-                            </h3>
-                          </div>
-                          <ul class="soaring-lists">
-                            <li
-                              v-for="(soaring, index4) in soaringLists"
-                              :key="index4"
-                              v-if="index4 < 10"
-                            >
-                              {{index4+1}}
-                              <span>{{soaring.name}}</span>
-                            </li>
-                            <li class="all">查看全部 ></li>
-                          </ul>
                         </div>
-                        <div class="lt-center">
-                          <div class="soaring">
-                            <img src="../../assets/image/img-new.jpg" alt>
-                            <h3>云音乐新歌榜
-                              <p>
-                                <Icon type="ios-play"/>
-                                <span>
-                                  <Icon type="ios-folder"/>
-                                </span>
-                              </p>
-                            </h3>
-                          </div>
-                          <ul class="soaring-lists">
-                            <li
-                              v-for="(newSong, index5) in newSongs"
-                              :key="index5"
-                              v-if="index5 < 10"
-                            >
-                              {{index5+1}}
-                              <span>{{newSong.name}}</span>
-                            </li>
-                            <li class="all">查看全部 ></li>
-                          </ul>
-                        </div>
-                        <div class="lt-right">
-                          <div class="soaring">
-                            <img src="../../assets/image/img-original.jpg" alt>
-                            <h3>云音乐原创榜
-                              <p>
-                                <Icon type="ios-play"/>
-                                <span>
-                                  <Icon type="ios-folder"/>
-                                </span>
-                              </p>
-                            </h3>
-                          </div>
-                          <ul class="soaring-lists">
-                            <li
-                              v-for="(original, index6) in originals"
-                              :key="index6"
-                              v-if="index6 < 10"
-                            >
-                              {{index6+1}}
-                              <span>{{original.name}}</span>
-                            </li>
-                            <li class="all">查看全部 ></li>
-                          </ul>
-                        </div>
-                      </div>
-                    </div>
+                        <img :src="song.picUrl" alt>
+                        <p>{{song.name}}</p>
+                      </li>
+                    </ul>
                   </div>
                 </div>
-                <div class="c-right">
-                  <div class="r-login">
-                    <p>登录网易云音乐，可以享受无限收藏的乐趣，并且无限同步到手机</p>
-                    <Button>用户登录</Button>
+                <!-- 新碟上架 -->
+                <div class="c-hot new-dish">
+                  <div class="hot-title">
+                    <h3>
+                      <Icon type="md-disc"/>新碟上架
+                    </h3>
+                    <p>更多
+                      <Icon type="ios-arrow-round-forward"/>
+                    </p>
                   </div>
-                  <div class="r-singer">
-                    <ul>
-                      <li>
-                        <h3>入驻歌手</h3>
-                        <p>查看全部 ></p>
-                      </li>
-                      <li></li>
-                      <li v-for="(singer, index7) in enterSingers" :key="index7" v-if="index7 < 5">
-                        <img :src="singer.img1v1Url" alt>
-                        <div class="singer">
-                          <p>{{singer.name}}</p>
-                          <!-- <p>{{singer.name}}</p> -->
+                  <div class="dh-box">
+                    <swiper :options="swiperOption">
+                      <swiper-slide
+                        v-for="(album, index3) in albums"
+                        :key="index3"
+                        v-show="index3 < 10"
+                      >
+                        <div class="dh-img">
+                          <img :src="album.picUrl" alt>
+                          <p>{{album.name}}</p>
+                          <p>{{album.artist.name}}</p>
                         </div>
-                      </li>
-                      <div class="musician">
-                        <Button>申请成为网易音乐人</Button>
+                      </swiper-slide>
+                    </swiper>
+                  </div>
+                </div>
+                <!-- 榜单 -->
+                <div class="c-hot new-dish list">
+                  <div class="hot-title">
+                    <h3>
+                      <Icon type="md-disc"/>榜单
+                    </h3>
+                    <p>更多
+                      <Icon type="ios-arrow-round-forward"/>
+                    </p>
+                  </div>
+                  <div class="lt-box">
+                    <div class="lt-content">
+                      <div class="lt-left">
+                        <div class="soaring">
+                          <img src="../../assets/image/img-soaring.jpg" alt>
+                          <h3>云音乐飙升榜
+                            <p>
+                              <Icon type="ios-play"/>
+                              <span>
+                                <Icon type="ios-folder"/>
+                              </span>
+                            </p>
+                          </h3>
+                        </div>
+                        <ul class="soaring-lists">
+                          <li
+                            v-for="(soaring, index4) in soaringLists"
+                            :key="index4"
+                            v-show="index4 < 10"
+                          >
+                            {{index4+1}}
+                            <span>{{soaring.name}}</span>
+                          </li>
+                          <li class="all">查看全部 ></li>
+                        </ul>
                       </div>
-                    </ul>
-                  </div>
-                  <div class="r-anchor">
-                    <ul>
-                      <li>
-                        <h3>热门主播</h3>
-                      </li>
-                      <li></li>
-                      <li v-for="(artist, index8) in artists" :key="index8" v-if="index8 < 5">
-                        <div class="anchor">
-                          <img :src="artist.img1v1Url" alt>
-                          <div class="anchor-name">
-                            <h3>
-                              {{artist.name}}
-                              <i>V</i>
-                            </h3>
-                            <p v-for="(item, index9) in artist.alias" :key="index9">{{item}}</p>
-                          </div>
+                      <div class="lt-center">
+                        <div class="soaring">
+                          <img src="../../assets/image/img-new.jpg" alt>
+                          <h3>云音乐新歌榜
+                            <p>
+                              <Icon type="ios-play"/>
+                              <span>
+                                <Icon type="ios-folder"/>
+                              </span>
+                            </p>
+                          </h3>
                         </div>
-                      </li>
-                    </ul>
+                        <ul class="soaring-lists">
+                          <li
+                            v-for="(newSong, index5) in newSongs"
+                            :key="index5"
+                            v-show="index5 < 10"
+                          >
+                            {{index5+1}}
+                            <span>{{newSong.name}}</span>
+                          </li>
+                          <li class="all">查看全部 ></li>
+                        </ul>
+                      </div>
+                      <div class="lt-right">
+                        <div class="soaring">
+                          <img src="../../assets/image/img-original.jpg" alt>
+                          <h3>云音乐原创榜
+                            <p>
+                              <Icon type="ios-play"/>
+                              <span>
+                                <Icon type="ios-folder"/>
+                              </span>
+                            </p>
+                          </h3>
+                        </div>
+                        <ul class="soaring-lists">
+                          <li
+                            v-for="(original, index6) in originals"
+                            :key="index6"
+                            v-show="index6 < 10"
+                          >
+                            {{index6+1}}
+                            <span>{{original.name}}</span>
+                          </li>
+                          <li class="all">查看全部 ></li>
+                        </ul>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
-            </TabPane>
-            <TabPane label="排行榜" name="name2">标签二的内容</TabPane>
-            <TabPane label="歌单" name="name3">标签三的内容</TabPane>
-            <TabPane label="主播电台" name="name4">标签一的内容</TabPane>
-            <TabPane label="歌手" name="name5">标签二的内容</TabPane>
-            <TabPane label="新歌上架" name="name6">标签三的内容</TabPane>
-          </Tabs>
+              <div class="c-right">
+                <div class="r-login">
+                  <p>登录网易云音乐，可以享受无限收藏的乐趣，并且无限同步到手机</p>
+                  <Button>用户登录</Button>
+                </div>
+                <div class="r-singer">
+                  <ul>
+                    <li>
+                      <h3>入驻歌手</h3>
+                      <p>查看全部 ></p>
+                    </li>
+                    <li></li>
+                    <li v-for="(singer, index7) in enterSingers" :key="index7" v-show="index7 < 5">
+                      <img :src="singer.img1v1Url" alt>
+                      <div class="singer">
+                        <p>{{singer.name}}</p>
+                        <!-- <p>{{singer.name}}</p> -->
+                      </div>
+                    </li>
+                    <div class="musician">
+                      <Button>申请成为网易音乐人</Button>
+                    </div>
+                  </ul>
+                </div>
+                <div class="r-anchor">
+                  <ul>
+                    <li>
+                      <h3>热门主播</h3>
+                    </li>
+                    <li></li>
+                    <li v-for="(artist, index8) in artists" :key="index8" v-show="index8 < 5">
+                      <div class="anchor">
+                        <img :src="artist.img1v1Url" alt>
+                        <div class="anchor-name">
+                          <h3>
+                            {{artist.name}}
+                            <i>V</i>
+                          </h3>
+                          <p v-for="(item, index9) in artist.alias" :key="index9">{{item}}</p>
+                        </div>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- 排行榜 -->
+          <div class="tab-name--2" v-if="value === 'name2'">
+            <div class="leaderboard">
+              <div class="ld-left">
+                <div class="ld-lists--1">
+                  <h3>云音乐特色榜</h3>
+                  <ul class="ld-lists">
+                    <li v-for="(list, index10) in topLists" :key="index10" v-show="index10 < 4">
+                      <div class="ld-list_soaring">
+                        <img :src="list.coverImgUrl" alt>
+                        <div class="soaring-name">
+                          <p>{{list.name}}</p>
+                          <p>{{list.updateFrequency}}</p>
+                        </div>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+                <!--  -->
+                <div class="ld-lists--1">
+                  <h3>全球媒体榜</h3>
+                  <ul class="ld-lists">
+                    <li v-for="(list, index10) in topLists" :key="index10" v-show="index10 > 3">
+                      <div class="ld-list_soaring">
+                        <img :src="list.coverImgUrl" alt>
+                        <div class="soaring-name">
+                          <p>{{list.name}}</p>
+                          <p>{{list.updateFrequency}}</p>
+                        </div>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              <div class="ld-right"></div>
+            </div>
+          </div>
         </div>
       </Content>
       <Footer>
@@ -328,7 +367,8 @@ import {
   getNewSongs,
   getOriginal,
   getEnterSinger,
-  getArtists
+  getArtists,
+  getToplist
 } from "../../service/getData";
 import { swiper, swiperSlide } from "vue-awesome-swiper";
 import "swiper/dist/css/swiper.css";
@@ -340,6 +380,7 @@ export default {
   },
   data() {
     return {
+      value: "name1",
       value3: 0,
       setting: {
         autoplay: true,
@@ -364,10 +405,12 @@ export default {
       newSongs: [],
       originals: [],
       enterSingers: [],
-      artists: []
+      artists: [],
+      topLists: []
     };
   },
   mounted() {
+    // this.swiper.slideTo(3, 1000, false);
     getBanner().then(res => {
       this.banners = res.banners;
     });
@@ -392,7 +435,9 @@ export default {
     getArtists().then(res => {
       this.artists = res.artists;
     });
-    this.swiper.slideTo(3, 1000, false);
+    getToplist().then(res => {
+      this.topLists = res.list;
+    });
   },
   methods: {},
   computed: {
@@ -469,34 +514,46 @@ export default {
 }
 .ivu-layout-content {
   background: #f2f2f2;
+  .ivu-tabs {
+    border-left: 1px solid #ccc;
+    border-right: 1px solid #ccc;
+    .ivu-tabs-bar {
+      border-bottom: 0;
+      margin-bottom: 0;
+      .ivu-tabs-nav-scroll {
+        background: #c20c0c;
+        color: #fff;
+        height: 40px;
+      }
+    }
+    .ivu-tabs-ink-bar {
+      background: none;
+    }
+    .ivu-tabs-nav {
+      padding-left: 600px;
+    }
+    .ivu-tabs-nav .ivu-tabs-tab-active {
+      color: #fff;
+      font-weight: bold;
+      font-size: 12px;
+      background: #9b0909;
+      border-radius: 20px;
+    }
+    .ivu-tabs-tab:hover {
+      color: #fff;
+      font-weight: bold;
+      font-size: 12px;
+      background: #9b0909;
+      border-radius: 40px;
+    }
+  }
   .c-bg {
     width: 1100px;
     margin-left: auto;
     margin-right: auto;
     background: #fff;
-    .ivu-tabs {
-      .ivu-tabs-bar {
-        border-bottom: 0;
-      }
-      .ivu-tabs-ink-bar {
-        background: none;
-      }
-      .ivu-tabs-nav {
-        margin-left: 200px;
-      }
-      .ivu-tabs-nav .ivu-tabs-tab-active {
-        color: #c20c0c;
-        font-weight: bold;
-        font-size: 18px;
-      }
-      .ivu-tabs-tab:hover {
-        color: #c20c0c;
-        font-weight: bold;
-        font-size: 18px;
-      }
-      .ivu-carousel{
-        height: 407px;
-      }
+    .ivu-carousel {
+      height: 405px;
     }
     .c-banner {
       img {
@@ -506,12 +563,13 @@ export default {
     .content {
       display: flex;
       justify-content: space-between;
+      height: 100%;
+      border-left: 1px solid #ccc;
+      border-right: 1px solid #ccc;
       .c-left {
         width: 740px;
         padding: 20px;
-        border: 1px solid #ccc;
-        border-bottom: 0;
-        border-top: 0;
+
         // 热门推荐
         .c-hot {
           .hot-title {
@@ -548,6 +606,7 @@ export default {
               li {
                 list-style: none;
                 margin-top: 10px;
+                padding-left: 10px;
                 img {
                   width: 140px;
                   height: 140px;
@@ -607,7 +666,6 @@ export default {
         .list {
           .lt-box {
             width: 100%;
-            height: auto;
             border: 1px solid #ccc;
             margin-top: 20px;
             margin-bottom: 20px;
@@ -655,10 +713,7 @@ export default {
       }
       .c-right {
         width: 360px;
-        border: 1px solid #ccc;
-        border-bottom: 0;
-        border-left: 0;
-        border-top: 0;
+        border-left: 1px solid #ccc;
         .r-login {
           padding: 20px;
           text-align: center;
@@ -688,10 +743,6 @@ export default {
               border-bottom: 1px solid #ccc;
               margin-top: 4px;
             }
-            // li:nth-of-type(3) {
-            //   margin-top: 10px;
-            //   background: #fafafa;
-            // }
             li:nth-of-type(n + 3) {
               margin-top: 10px;
               background: #fafafa;
@@ -765,11 +816,51 @@ export default {
         }
       }
     }
+    // 排行榜
+    .tab-name--2 {
+      .leaderboard {
+        .ld-left {
+          width: 240px;
+          .ld-lists--1 {
+            padding-top: 40px;
+            h3 {
+              padding: 0 10px 12px 15px;
+              font-size: 14px;
+              color: #000;
+            }
+            .ld-lists {
+              list-style: none;
+              li {
+                //  background: #e6e6e6;
+                .ld-list_soaring {
+                  display: flex;
+                  justify-content: flex-start;
+                  padding: 20px;
+                  img {
+                    width: 40px;
+                    height: 40px;
+                  }
+                  .soaring-name {
+                    margin-left: 10px;
+                    p:nth-of-type(1) {
+                      padding-bottom: 4px;
+                    }
+                  }
+                }
+              }
+              li:hover {
+                background: #fafafa;
+              }
+            }
+          }
+        }
+      }
+    }
   }
 }
 .ivu-layout-footer {
   background: #f2f2f2;
-  height: auto;
+  height: 100%;
   border-top: 1px solid #d3d3d3;
   .footer {
     width: 1100px;
