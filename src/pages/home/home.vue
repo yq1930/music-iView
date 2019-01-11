@@ -282,8 +282,13 @@
               <div class="ld-left">
                 <div class="ld-lists--1">
                   <h3>云音乐特色榜</h3>
-                  <ul class="ld-lists">
-                    <li v-for="(list, index10) in topLists" :key="index10" v-show="index10 < 4">
+                  <ul class="ld-lists" :class="{ add: isAdd}">
+                    <li
+                      v-for="(list, index10) in topLists"
+                      :key="index10"
+                      v-show="index10 < 4"
+                      @click="listName(index10)"
+                    >
                       <div class="ld-list_soaring">
                         <img :src="list.coverImgUrl" alt>
                         <div class="soaring-name">
@@ -298,7 +303,12 @@
                 <div class="ld-lists--1">
                   <h3>全球媒体榜</h3>
                   <ul class="ld-lists">
-                    <li v-for="(list, index10) in topLists" :key="index10" v-show="index10 > 3">
+                    <li
+                      v-for="(list, index10) in topLists"
+                      :key="index10"
+                      v-show="index10 > 3"
+                      @click="listName(index10)"
+                    >
                       <div class="ld-list_soaring">
                         <img :src="list.coverImgUrl" alt>
                         <div class="soaring-name">
@@ -310,7 +320,56 @@
                   </ul>
                 </div>
               </div>
-              <div class="ld-right"></div>
+              <div class="ld-right">
+                <div
+                  class="ld-rt-pdding"
+                  v-for="(listDetail, index11) in toplistDetail"
+                  :key="index11"
+                  v-show="index11===step"
+                >
+                  <div class="ld-rt-flex">
+                    <div class="ld-rt-img">
+                      <img :src="listDetail.coverImgUrl" alt>
+                    </div>
+                    <div class="ld-rt-name">
+                      <h3>{{listDetail.name}}</h3>
+                      <p>
+                        <Icon type="ios-time-outline"/>
+                        最近更新:{{listDetail.updateTime}}({{listDetail.updateFrequency}})
+                      </p>
+                      <ul>
+                        <li>
+                          <Button type="primary" icon="md-arrow-dropright">播放</Button>
+                          <Button type="primary" icon="ios-add"></Button>
+                        </li>
+                        <li>
+                          <Button icon="ios-folder">({{listDetail.subscribedCount}})</Button>
+                        </li>
+                        <li>
+                          <Button icon="ios-redo">({{listDetail.subscribedCount}})</Button>
+                        </li>
+                        <li>
+                          <Button icon="md-download">下载</Button>
+                        </li>
+                        <li>
+                          <Button icon="md-text">({{listDetail.subscribedCount}})</Button>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                  <!--歌曲列表-->
+                  <div class="ld-rt-songs">
+                    <div class="songs-title">
+                      <h3>
+                        歌曲列表
+                        <span>{{listDetail.trackCount}}首歌</span>
+                      </h3>
+                      <p>播放:{{listDetail.playCount}}次</p>
+                    </div>
+                    <div class="songs-box"></div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -368,7 +427,8 @@ import {
   getOriginal,
   getEnterSinger,
   getArtists,
-  getToplist
+  getToplist,
+  getToplistDetail
 } from "../../service/getData";
 import { swiper, swiperSlide } from "vue-awesome-swiper";
 import "swiper/dist/css/swiper.css";
@@ -406,7 +466,9 @@ export default {
       originals: [],
       enterSingers: [],
       artists: [],
-      topLists: []
+      topLists: [],
+      toplistDetail: [],
+      step: 0
     };
   },
   mounted() {
@@ -438,8 +500,15 @@ export default {
     getToplist().then(res => {
       this.topLists = res.list;
     });
+    getToplistDetail().then(res => {
+      this.toplistDetail = res.list;
+    });
   },
-  methods: {},
+  methods: {
+    listName(index10) {
+      this.step = index10;
+    }
+  },
   computed: {
     swiper() {
       return this.$refs.mySwiper.swiper;
@@ -819,6 +888,8 @@ export default {
     // 排行榜
     .tab-name--2 {
       .leaderboard {
+        display: flex;
+        justify-content: flex-start;
         .ld-left {
           width: 240px;
           .ld-lists--1 {
@@ -850,6 +921,72 @@ export default {
               }
               li:hover {
                 background: #fafafa;
+              }
+            }
+          }
+        }
+        .ld-right {
+          border-left: 1px solid #ccc;
+          .ld-rt-pdding {
+            padding: 40px;
+            .ld-rt-flex {
+              display: flex;
+              justify-content: flex-start;
+              align-items: center;
+              .ld-rt-img {
+                border: 1px solid #ccc;
+                padding: 10px;
+                img {
+                  width: 150px;
+                  height: 150px;
+                }
+              }
+              .ld-rt-name {
+                margin-left: 20px;
+                h3 {
+                  font-size: 20px;
+                }
+                p {
+                  font-size: 12px;
+                  margin: 20px 0;
+                }
+                ul {
+                  display: flex;
+                  justify-content: flex-start;
+                  align-items: center;
+                  list-style: none;
+                  li {
+                  }
+                  li:nth-of-type(n + 2) {
+                    margin-left: 10px;
+                  }
+                }
+              }
+            }
+            // 歌曲列表
+            .ld-rt-songs {
+              margin-top: 40px;
+              .songs-title {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                h3 {
+                  font-size: 20px;
+                  span {
+                    font-size: 12px;
+                  }
+                }
+                p {
+                  font-size: 12px;
+                  color: #666;
+                }
+              }
+              .songs-box {
+                border: 1px solid #ccc;
+                border-top: 2px solid #c20c0c;
+                width: 100%;
+                height: 100%;
+                margin-top: 10px;
               }
             }
           }

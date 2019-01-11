@@ -27,8 +27,8 @@ export const getArtists = () => fetch('/top/artists', {});
 //所有榜单
 export const getToplist = () => fetch('/toplist', {});
 
-
-
+//所有榜单内容摘要
+export const getToplistDetail = () => fetch('/toplist/detail', {});
 
 
 
