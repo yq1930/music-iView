@@ -60,7 +60,7 @@
         </Tabs>
         <div class="c-bg">
           <!-- 推荐页 -->
-          <div v-if="value === 'name1'">
+          <div v-show="value === 'name1'">
             <Carousel
               v-model="value3"
               loop
@@ -71,9 +71,9 @@
               :trigger="setting.trigger"
               :arrow="setting.arrow"
             >
-              <CarouselItem v-for="(banner, index1) in banners" :key="index1">
+              <CarouselItem v-for="(banner, index1) in banners" :key="index1" v-show="banners">
                 <div class="c-banner">
-                  <img :src="banner.imageUrl" alt>
+                  <img v-lazy="banner.imageUrl" alt>
                 </div>
               </CarouselItem>
             </Carousel>
@@ -99,7 +99,11 @@
                   </div>
                   <div class="hot-lists">
                     <ul class="list-song">
-                      <li v-for="(song, index2) in songs" :key="index2" v-show="index2 < 8">
+                      <li
+                        v-for="(song, index2) in songs"
+                        :key="index2"
+                        v-show="index2 < 8 && songs"
+                      >
                         <div class="list-play">
                           <div class="play-bg">
                             <div class="play-number">
@@ -109,7 +113,7 @@
                             <Icon type="ios-play"/>
                           </div>
                         </div>
-                        <img :src="song.picUrl" alt>
+                        <img v-lazy="song.picUrl" alt>
                         <p>{{song.name}}</p>
                       </li>
                     </ul>
@@ -130,10 +134,10 @@
                       <swiper-slide
                         v-for="(album, index3) in albums"
                         :key="index3"
-                        v-show="index3 < 10"
+                        v-show="index3 < 10 && albums"
                       >
                         <div class="dh-img">
-                          <img :src="album.picUrl" alt>
+                          <img v-lazy="album.picUrl" alt>
                           <p>{{album.name}}</p>
                           <p>{{album.artist.name}}</p>
                         </div>
@@ -169,7 +173,7 @@
                           <li
                             v-for="(soaring, index4) in soaringLists"
                             :key="index4"
-                            v-show="index4 < 10"
+                            v-show="index4 < 10 && soaringLists"
                           >
                             {{index4+1}}
                             <span>{{soaring.name}}</span>
@@ -193,7 +197,7 @@
                           <li
                             v-for="(newSong, index5) in newSongs"
                             :key="index5"
-                            v-show="index5 < 10"
+                            v-show="index5 < 10 && newSongs"
                           >
                             {{index5+1}}
                             <span>{{newSong.name}}</span>
@@ -217,7 +221,7 @@
                           <li
                             v-for="(original, index6) in originals"
                             :key="index6"
-                            v-show="index6 < 10"
+                            v-show="index6 < 10 && originals"
                           >
                             {{index6+1}}
                             <span>{{original.name}}</span>
@@ -241,11 +245,14 @@
                       <p>查看全部 ></p>
                     </li>
                     <li></li>
-                    <li v-for="(singer, index7) in enterSingers" :key="index7" v-show="index7 < 5">
-                      <img :src="singer.img1v1Url" alt>
+                    <li
+                      v-for="(singer, index7) in enterSingers"
+                      :key="index7"
+                      v-show="index7 < 5 && enterSingers"
+                    >
+                      <img v-lazy="singer.img1v1Url" alt>
                       <div class="singer">
                         <p>{{singer.name}}</p>
-                        <!-- <p>{{singer.name}}</p> -->
                       </div>
                     </li>
                     <div class="musician">
@@ -259,9 +266,13 @@
                       <h3>热门主播</h3>
                     </li>
                     <li></li>
-                    <li v-for="(artist, index8) in artists" :key="index8" v-show="index8 < 5">
+                    <li
+                      v-for="(artist, index8) in artists"
+                      :key="index8"
+                      v-show="index8 < 5 && artists"
+                    >
                       <div class="anchor">
-                        <img :src="artist.img1v1Url" alt>
+                        <img v-lazy="artist.img1v1Url" alt>
                         <div class="anchor-name">
                           <h3>
                             {{artist.name}}
@@ -277,20 +288,20 @@
             </div>
           </div>
           <!-- 排行榜 -->
-          <div class="tab-name--2" v-if="value === 'name2'">
+          <div class="tab-name--2" v-show="value === 'name2'">
             <div class="leaderboard">
               <div class="ld-left">
                 <div class="ld-lists--1">
                   <h3>云音乐特色榜</h3>
-                  <ul class="ld-lists" :class="{ add: isAdd}">
+                  <ul class="ld-lists">
                     <li
-                      v-for="(list, index10) in topLists"
+                      v-for="(list, index10) in toplistDetail"
                       :key="index10"
-                      v-show="index10 < 4"
+                      v-show="index10 < 4 && toplistDetail"
                       @click="listName(index10)"
                     >
                       <div class="ld-list_soaring">
-                        <img :src="list.coverImgUrl" alt>
+                        <img v-lazy="list.coverImgUrl" alt>
                         <div class="soaring-name">
                           <p>{{list.name}}</p>
                           <p>{{list.updateFrequency}}</p>
@@ -304,13 +315,13 @@
                   <h3>全球媒体榜</h3>
                   <ul class="ld-lists">
                     <li
-                      v-for="(list, index10) in topLists"
+                      v-for="(list, index10) in toplistDetail"
                       :key="index10"
-                      v-show="index10 > 3"
+                      v-show="index10 > 3 && toplistDetail"
                       @click="listName(index10)"
                     >
                       <div class="ld-list_soaring">
-                        <img :src="list.coverImgUrl" alt>
+                        <img v-lazy="list.coverImgUrl" alt>
                         <div class="soaring-name">
                           <p>{{list.name}}</p>
                           <p>{{list.updateFrequency}}</p>
@@ -325,17 +336,22 @@
                   class="ld-rt-pdding"
                   v-for="(listDetail, index11) in toplistDetail"
                   :key="index11"
-                  v-show="index11===step"
+                  v-show="index11===step && toplistDetail"
                 >
                   <div class="ld-rt-flex">
                     <div class="ld-rt-img">
-                      <img :src="listDetail.coverImgUrl" alt>
+                      <img v-lazy="listDetail.coverImgUrl" alt>
                     </div>
                     <div class="ld-rt-name">
                       <h3>{{listDetail.name}}</h3>
                       <p>
-                        <Icon type="ios-time-outline"/>
-                        最近更新:{{listDetail.updateTime}}({{listDetail.updateFrequency}})
+                        <Icon type="ios-time-outline"/>最近更新:
+                        <span
+                          v-for="(item, index12) in updateTime"
+                          :key="index12"
+                          v-show="index12 === step"
+                        >{{item}}</span>
+                        ({{listDetail.updateFrequency}})
                       </p>
                       <ul>
                         <li>
@@ -366,12 +382,35 @@
                       </h3>
                       <p>播放:{{listDetail.playCount}}次</p>
                     </div>
-                    <div class="songs-box"></div>
+                    <div class="songs-box">
+                      <Table
+                        :columns="columns1"
+                        :data="data1"
+                        v-show="step === 0"
+                        stripe
+                        :loading="loading"
+                      ></Table>
+                      <Table
+                        :columns="columns1"
+                        :data="data1"
+                        v-show="step"
+                        stripe
+                        :loading="loading"
+                      ></Table>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
+          <!-- 歌单 -->
+          <div v-show="value === 'name3'"></div>
+          <!-- 主播电台 -->
+          <div v-show="value === 'name4'"></div>
+          <!-- 歌手 -->
+          <div v-show="value === 'name5'"></div>
+          <!-- 新碟上架 -->
+          <div v-show="value === 'name6'"></div>
         </div>
       </Content>
       <Footer>
@@ -427,11 +466,12 @@ import {
   getOriginal,
   getEnterSinger,
   getArtists,
-  getToplist,
-  getToplistDetail
+  getToplistDetail,
+  getList
 } from "../../service/getData";
 import { swiper, swiperSlide } from "vue-awesome-swiper";
 import "swiper/dist/css/swiper.css";
+import { resolve } from "path";
 
 export default {
   components: {
@@ -466,9 +506,40 @@ export default {
       originals: [],
       enterSingers: [],
       artists: [],
-      topLists: [],
       toplistDetail: [],
-      step: 0
+      updateTime: [],
+      step: 0,
+      loading: false,
+      columns1: [
+        {
+          type: "index",
+          width: 60,
+          align: "left",
+          title: " "
+        },
+        {
+          title: "标题",
+          key: "name",
+          width: 300
+        },
+        {
+          title: "时长",
+          key: "time"
+        },
+        {
+          title: "歌手",
+          key: "singer"
+        }
+      ],
+      data1: [
+        {
+          name: "",
+          time: "",
+          singer: ""
+        }
+      ],
+      idx: 3,
+      lists: []
     };
   },
   mounted() {
@@ -482,12 +553,15 @@ export default {
     getAlbum().then(res => {
       this.albums = res.albums;
     });
+    // 飙升榜
     getSoaring().then(res => {
       this.soaringLists = res.playlist.tracks;
     });
+    // 新歌榜
     getNewSongs().then(res => {
       this.newSongs = res.playlist.tracks;
     });
+    // 原创榜
     getOriginal().then(res => {
       this.originals = res.playlist.tracks;
     });
@@ -497,23 +571,118 @@ export default {
     getArtists().then(res => {
       this.artists = res.artists;
     });
-    getToplist().then(res => {
-      this.topLists = res.list;
-    });
     getToplistDetail().then(res => {
       this.toplistDetail = res.list;
+      this.getTime();
+    });
+    // 排行榜
+    getList(this.idx).then(res => {
+      this.lists = res.playlist.tracks;
+      this.getData();
     });
   },
   methods: {
     listName(index10) {
       this.step = index10;
+      this.loading = true;
+      switch (this.step) {
+        case 0:
+          this.idx = 3;
+          getList(this.idx).then(res => {
+            if (res) {
+              this.lists = res.playlist.tracks;
+              this.getData();
+              this.loading = false;
+            } else {
+              this.$Message.error("网络连接错误");
+            }
+          });
+          break;
+        case 1:
+          this.idx = 0;
+          getList(this.idx).then(res => {
+            this.lists = res.playlist.tracks;
+            this.getData();
+            this.loading = false;
+          });
+          break;
+        case 2:
+          this.idx = 2;
+          getList(this.idx).then(res => {
+            this.lists = res.playlist.tracks;
+            this.getData();
+            this.loading = false;
+          });
+          break;
+        case 3:
+          this.idx = 1;
+          getList(this.idx).then(res => {
+            this.lists = res.playlist.tracks;
+            this.getData();
+            this.loading = false;
+          });
+          break;
+      }
+    },
+    getTime() {
+      this.toplistDetail.forEach((value, index) => {
+        let date = new Date(value.updateTime);
+        let M =
+          date.getMonth() + 1 < 10
+            ? "0" + (date.getMonth() + 1)
+            : date.getMonth() + 1;
+        let D = date.getDate();
+        let time = M + "月" + D + "日";
+        this.updateTime.push(time);
+      });
+    },
+    getData() {
+      let data = [];
+      let dataObj = {};
+      for (const value of this.lists) {
+        for (const item of value.ar) {
+          let M = parseInt((value.dt % (1000 * 60 * 60)) / (1000 * 60));
+          let S = parseInt((value.dt % (1000 * 60)) / 1000);
+          if (M < 10) {
+            M = "0" + M;
+          }
+          if (S < 10) {
+            S = "0" + S;
+          }
+          let time = M + ":" + S;
+          dataObj = {
+            name: value.name,
+            time: time,
+            singer: item.name
+          };
+          data.push(dataObj);
+        }
+      }
+      this.getObjArray(data);
+    },
+    getObjArray(data) {
+      var result = []; //去重后返回的结果数组
+      var temp = {}; //临时对象
+      //将对象数组中每一项的name值作为属性，若temp不拥有此属性时则为temp添加此属性且将其值赋为true，并将这一项push到结果数组中
+      for (var i = 0; i < data.length; i++) {
+        var myname = data[i].name;
+        if (temp[myname]) {
+          //如果temp中已经存在此属性名，则说明遇到重复项
+          continue; //不继续执行接下来的代码，跳转至循环开头
+        }
+        temp[myname] = true; //为temp添加此属性（myname）且将其值赋为true
+        result.push(data[i]); //将这一项复制到结果数组result中去
+      }
+      this.data1 = result;
+      this.data1.splice(100);
     }
   },
   computed: {
-    swiper() {
-      return this.$refs.mySwiper.swiper;
-    }
-  }
+    // swiper() {
+    //   return this.$refs.mySwiper.swiper;
+    // }
+  },
+  watch: {}
 };
 </script>
 <style lang="scss" >
@@ -756,6 +925,12 @@ export default {
                   align-items: center;
                   h3 {
                     margin-left: 10px;
+                    color: #000;
+                    font-size: 14px;
+                    p {
+                      color: #ccc;
+                      font-size: 22px;
+                    }
                   }
                 }
                 .soaring-lists {
@@ -767,6 +942,16 @@ export default {
                     overflow: hidden;
                     text-overflow: ellipsis;
                     white-space: nowrap;
+                    font-size: 16px;
+                    span {
+                      color: #000;
+                      margin-left: 10px;
+                    }
+                  }
+                  li:nth-of-type(1),
+                  li:nth-of-type(2),
+                  li:nth-of-type(3) {
+                    color: #c10d0c;
                   }
                   .all {
                     text-align: right;
@@ -982,7 +1167,6 @@ export default {
                 }
               }
               .songs-box {
-                border: 1px solid #ccc;
                 border-top: 2px solid #c20c0c;
                 width: 100%;
                 height: 100%;

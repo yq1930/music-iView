@@ -25,14 +25,16 @@ export const getEnterSinger = () => fetch('/artist/list?cat=5001', {});
 export const getArtists = () => fetch('/top/artists', {});
 
 //所有榜单
-export const getToplist = () => fetch('/toplist', {});
+// export const getToplist = () => fetch('/toplist', {});
 
 //所有榜单内容摘要
 export const getToplistDetail = () => fetch('/toplist/detail', {});
 
 
-
-
+// 排行榜
+export const getList = (idx) => fetch('/top/list', {
+  idx,
+});
 
 
 

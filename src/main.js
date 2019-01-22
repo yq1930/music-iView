@@ -5,9 +5,11 @@ import routers from './router/router';
 import iView from 'iview';
 import 'iview/dist/styles/iview.css';
 import './assets/fonts/iconfont.css'
+import VueLazyload from 'vue-lazyload'
 
 Vue.use(VueRouter);
 Vue.use(iView);
+Vue.use(VueLazyload);
 
 const RouterConfig = {
   routes: routers,
